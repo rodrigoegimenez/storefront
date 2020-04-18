@@ -20,7 +20,17 @@
                    type="email"
                    email
                    [disabled]="registrationSent"
-                   [(ngModel)]="emailAddress">
+            [(ngModel)]="emailAddress">
+            <input
+                   class="form-control mt-1"
+                   placeholder="Password"
+                   name="password"
+                   required
+                   type="password"
+                   password
+                   [disabled]="registrationSent"
+                   [(ngModel)]="password"
+                   *ngIf="!requireVerification">
 
         <button class="btn btn-primary btn-block mt-3"
                 [disabled]="registerForm.invalid || registrationSent"
@@ -28,7 +38,8 @@
             Register
         </button>
         <div *ngIf="registrationSent" class="registration-sent">
-            Great! Now check your email ({{ emailAddress }}) to complete registration.
+            <span *ngIf="!requireVerificaiton else checkemail">Great! Now you can log in using your email and password.</span>
+            <ng-template #checkEmail>Great! Now check your email ({{ emailAddress }}) to complete registration.</ng-template>
         </div>
     </vsf-centered-card>
 </form>

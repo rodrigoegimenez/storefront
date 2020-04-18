@@ -12,9 +12,12 @@ import { REGISTER } from './register.graphql';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
+    requireVerification = false; // TODO: get requireVerification from server.
+
     firstName: string;
     lastName: string;
     emailAddress: string;
+    password: string;
     registrationSent = false;
     constructor(private dataService: DataService,
                 private changeDetector: ChangeDetectorRef) { }
@@ -25,8 +28,9 @@ export class RegisterComponent {
                 emailAddress: this.emailAddress,
                 firstName: this.firstName,
                 lastName: this.lastName,
-            },
-        }).subscribe(() => {
+                password: this.password,
+                },
+            }).subscribe(() => {
             this.registrationSent = true;
             this.changeDetector.markForCheck();
         });
