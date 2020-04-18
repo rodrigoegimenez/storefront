@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
-import { AddPayment } from '../../../common/generated-types';
+import { AddPayment, GetOrderForCheckout, Maybe } from '../../../common/generated-types';
 import { DataService } from '../../../core/providers/data/data.service';
 import { StateService } from '../../../core/providers/state/state.service';
 
-import { ADD_PAYMENT } from './checkout-payment.graphql';
+import { ADD_PAYMENT, GET_ORDER_FOR_CHECKOUT } from './checkout-payment.graphql';
 
 @Component({
     selector: 'vsf-checkout-payment',
@@ -18,10 +19,22 @@ export class CheckoutPaymentComponent {
     expMonth: number;
     expYear: number;
 
+    order: Maybe<GetOrderForCheckout.ActiveOrder>;
+    paypal = true; // TODO: Get Payment Method from server
+
     constructor(private dataService: DataService,
                 private stateService: StateService,
                 private router: Router,
-                private route: ActivatedRoute) { }
+                private route: ActivatedRoute) {
+                    if (this.paypal) {
+                        const activeOrder$ = this.dataService
+                        .query<GetOrderForCheckout.Query>(GET_ORDER_FOR_CHECKOUT)
+                        .pipe(map(data => data.activeOrder))
+                        .subscribe(data => {
+                            this.order = data;
+                        });
+                    }
+                }
 
     getMonths(): number[] {
         return Array.from({ length: 12 }).map((_, i) => i + 1);
@@ -33,13 +46,24 @@ export class CheckoutPaymentComponent {
     }
 
     completeOrder() {
-        this.dataService.mutate<AddPayment.Mutation, AddPayment.Variables>(ADD_PAYMENT, {
-            input: {
+        let paymentDetails: {method: string, metadata: {}};
+        if (this.paypal) {
+            paymentDetails = {
+                method: 'paypal',
+                metadata: {
+                    foo: 'bar', // Add order info here.
+                },
+            };
+        } else {
+            paymentDetails = {
                 method: 'example-payment-provider',
                 metadata: {
                     foo: 'bar',
                 },
-            },
+            };
+        }
+        this.dataService.mutate<AddPayment.Mutation, AddPayment.Variables>(ADD_PAYMENT, {
+            input: paymentDetails,
         })
             .subscribe(async result => {
                 const order = result.addPaymentToOrder;

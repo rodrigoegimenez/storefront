@@ -1,4 +1,5 @@
 <form class="payment-form mb-5" #paymentForm="ngForm" (submit)="completeOrder()">
+    <ng-container *ngIf="!paypal; else paypalBlock">
     <div class="input-group mb-3">
         <div class="input-group-prepend">
         <span class="input-group-text">
@@ -29,7 +30,8 @@
           </option>
       </select>
     </div>
-
+</ng-container>
+    <ng-template #paypalBlock><vsf-paypal [order]="order"></vsf-paypal></ng-template>
     <button class="btn btn-primary btn-lg"
             [disabled]="paymentForm.pristine || paymentForm.invalid">Complete order</button>
 </form>

@@ -7464,6 +7464,11 @@ ng-packagr@^9.0.0:
     terser "^4.3.8"
     update-notifier "^4.0.0"
 
+ngx-paypal@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/ngx-paypal/-/ngx-paypal-6.1.0.tgz#67ec2093499a1717ceceb98e5ce7c5fb93a97da8"
+  integrity sha512-dLWSJClvud9OCMDe2r9DnBqZqzxzQH0Z5hrglBtYwR1r4rIcLW2IbdtI3DHef4Cl1byLwAfd4mO0lHxDgEfffw==
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.npmjs.org/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
