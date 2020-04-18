@@ -1145,6 +1145,24 @@ export namespace AddPayment {
     export type AddPaymentToOrder = Cart.Fragment;
 }
 
+export namespace GetOrderForPayment {
+    export type Variables = {};
+
+    export type Query = {
+        __typename?: "Query";
+
+        activeOrder: Maybe<ActiveOrder>;
+    };
+
+    export type ActiveOrder = {
+        __typename?: "Order";
+
+        shippingAddress: Maybe<ShippingAddress>;
+    } & Cart.Fragment;
+
+    export type ShippingAddress = OrderAddress.Fragment;
+}
+
 export namespace GetNextOrderStates {
     export type Variables = {};
 
@@ -1817,6 +1835,8 @@ export namespace Cart {
 
         total: number;
 
+        currencyCode: CurrencyCode;
+
         adjustments: _Adjustments[];
     };
 
@@ -1848,6 +1868,8 @@ export namespace Cart {
         id: string;
 
         name: string;
+
+        sku: string;
     };
 
     export type Adjustments = {
@@ -1918,6 +1940,8 @@ export namespace OrderAddress {
         postalCode: Maybe<string>;
 
         country: Maybe<string>;
+
+        countryCode: Maybe<string>;
 
         phoneNumber: Maybe<string>;
     };

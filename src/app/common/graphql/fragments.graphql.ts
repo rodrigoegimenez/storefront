@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const ASSET_FRAGMENT = gql`
     fragment Asset on Asset {
@@ -32,6 +32,7 @@ export const CART_FRAGMENT = gql`
             productVariant {
                 id
                 name
+                sku
             }
             adjustments {
                 amount
@@ -50,6 +51,7 @@ export const CART_FRAGMENT = gql`
             description
         }
         total
+        currencyCode
         adjustments {
             amount
             description
@@ -79,6 +81,7 @@ export const ORDER_ADDRESS_FRAGMENT = gql`
         province
         postalCode
         country
+        countryCode
         phoneNumber
     }
 `;
