@@ -1,4 +1,4 @@
-FROM node:lts
+FROM node:lts AS builder
 
 WORKDIR /app
 
@@ -11,3 +11,6 @@ COPY . .
 
 RUN yarn build:ssr
 
+FROM alpine
+
+COPY --from=builder /app/dist/browser /app/dist/browser
