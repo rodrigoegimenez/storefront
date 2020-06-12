@@ -1,12 +1,10 @@
-import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostBinding, Inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { GetCollections } from '../../../common/generated-types';
 import { GET_COLLECTIONS } from '../../../common/graphql/documents.graphql';
-import { CollectionUrlPipe } from '../../../shared/pipes/collection-url.pipe';
 import { DataService } from '../../providers/data/data.service';
 import { StateService } from '../../providers/state/state.service';
 import { arrayToTree, RootNode, TreeNode } from '../collections-menu/array-to-tree';
@@ -24,10 +22,8 @@ export class CollectionsMenuMobileComponent implements OnInit {
     collectionTree$: Observable<RootNode<GetCollections.Items>>;
     selected0: string | null = null;
     selected1: string | null = null;
-    private collectionUrlPipe = new CollectionUrlPipe();
 
-    constructor(@Inject(DOCUMENT) private document: Document,
-                private router: Router,
+    constructor(private router: Router,
                 private stateService: StateService,
                 private dataService: DataService) { }
 
@@ -62,7 +58,7 @@ export class CollectionsMenuMobileComponent implements OnInit {
             event.preventDefault();
             event.stopImmediatePropagation();
         } else {
-            this.router.navigate(['/category/', this.collectionUrlPipe.transform(collection)]);
+            this.router.navigate(['/category/', collection.slug]);
             this.close();
         }
     }
